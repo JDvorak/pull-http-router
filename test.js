@@ -1,0 +1,58 @@
+const test = require('tape')
+const pull = require('pull-stream')
+const HttpRouter = require('./index')
+
+test('should provide methods for all http verbs', function (t) {
+  var router = new HttpRouter()
+  t.ok(router.get != null, 'Provides get method')
+  t.ok(router.delete != null, 'Provides delete method')
+  t.ok(router.put != null, 'Provides put method')
+  t.ok(router.post != null, 'Provides post method')
+  t.ok(router.update != null, 'Provides update method')
+  t.ok(router.options != null, 'Provides options method')
+  t.ok(router.connect != null, 'Provides connect method')
+  t.ok(router.patch != null, 'Provides patchmethod')
+  t.end()
+})
+
+test('should route requests', function (t) {
+  t.plan(1)
+  var router = new HttpRouter()
+
+  router.get('/', pull.count(0))
+  router.get('/test10', pull.count(10)) // TARGET
+
+  var last
+  pull(
+    pull.values([{url: 'http://blah.blah.com/test10', method: 'GET'}]),
+    router.route(),
+    pull.drain(function (ea) {
+      last = ea
+    }, function () {
+      t.ok(last === 10, 'Retrieve the correct pull stream by route.')
+      t.end()
+    })
+  )
+})
+
+test('should differentiate handlers by method', function (t) {
+  t.plan(1)
+  var router = new HttpRouter()
+
+  router.get('/', pull.count(0))
+  router.get('/test20', pull.count(10))
+  router.post('/test20', pull.count(20))  // TARGET
+
+  var last
+
+  pull(
+    pull.values([{url: 'http://www.anothertest.com/test20', method: 'POST'}]),
+    router.route(),
+    pull.drain(function (ea) {
+      last = ea
+    }, function () {
+      t.ok(last === 20, 'Retrieve the correct pull stream by route.')
+      t.end()
+    })
+    )
+})

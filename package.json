@@ -1,0 +1,36 @@
+{
+  "name": "pull-http-router",
+  "version": "1.0.0",
+  "description": "Minimal express-like router for pull-streams",
+  "main": "index.js",
+  "scripts": {
+    "deps": "dependency-check . && dependency-check . --extra --no-dev",
+    "test": "standard && npm run deps && NODE_ENV=test node test",
+    "test:cov": "standard && npm run deps && NODE_ENV=test istanbul cover test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jdvorak/pull-http-router.git"
+  },
+  "keywords": [
+    "pull-stream",
+    "router",
+    "http"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "pull-stream": "^3.5.0",
+    "routington": "^1.0.3"
+  },
+  "devDependencies": {
+    "dependency-check": "^2.8.0",
+    "istanbul": "^0.4.5",
+    "standard": "^10.0.1",
+    "tape": "^4.6.3"
+  },
+  "bugs": {
+    "url": "https://github.com/jdvorak/pull-http-router/issues"
+  },
+  "homepage": "https://github.com/jdvorak/pull-http-router#readme",
+  "author": "John Dvorak <john@johnsdvorak.com>"
+}
