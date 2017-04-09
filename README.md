@@ -11,7 +11,7 @@ const summary = require('server-summary')
 const toPull = require('stream-to-pull-stream')
 const http = require('http')
 
-var router = new pullHttpRouter()
+var router = new PullHttpRouter()
 
 router.post('/api/messages', pl.write(db), setStatus(200))
 router.get('/api/messages', [
@@ -43,7 +43,8 @@ server.listen(1337, summary(server))
 
 Usage: `router = new PullHttpRouter(opts)`
 
-Create a new PullHttpRouter
+Create a new PullHttpRouter.
+
 Accepts an options object with the following optional keys:
 - __router:__  Accepts any router object with a match and define method. Defaults to ![routington][routington]
 - __match:__ Specify a specific match method for matching routes. Defaults to ![routington][routington]#match
@@ -51,7 +52,7 @@ Accepts an options object with the following optional keys:
 
 ### router#route
 
-Usage: `router.route(opts)
+Usage: `router.route(opts)`
 
 Create a pull-stream which expects a request object, and returns a readable stream.
 
@@ -59,7 +60,7 @@ Create a pull-stream which expects a request object, and returns a readable stre
 
 Usage: `router.get(path, [streams...])`
 
-Accepts a path to match on, and a stream to stream to. If multiple pull-streams are provided they will be linked together. 
+Accepts a path to match on, and a stream to stream to. If multiple pull-streams are provided they will be linked together as if they were passed to pull-stream core's `pull()` 
 
 
 ## Installation
