@@ -46,9 +46,9 @@ Usage: `router = new PullHttpRouter(opts)`
 Create a new PullHttpRouter.
 
 Accepts an options object with the following optional keys:
-- __router:__  Accepts any router object with a match and define method. Defaults to ![routington][routington]
-- __match:__ Specify a specific match method for matching routes. Defaults to ![routington][routington]#match
-- __define:__ Specify a specific define method for defining routes. Defaults to ![routington][routington]#define
+- __router:__  Accepts any router object with a match and define method. Defaults to [routington][routington]
+- __match:__ Specify a specific match method for matching routes. Defaults to [routington][routington]#match
+- __define:__ Specify a specific define method for defining routes. Defaults to [routington][routington]#define
 
 ### router#route
 
