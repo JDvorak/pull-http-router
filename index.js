@@ -33,6 +33,10 @@ PullHttpRouter.prototype.route = function provideRouter (opts) {
 
     readables = match.node[request.method]
 
+    if (readables[0].length === 1) { // it is all through streams
+      readables = [pull.values([request])].concat(readables) //attach the data again
+    }
+
     return pull.apply(this, readables)
   }
 
@@ -40,18 +44,8 @@ PullHttpRouter.prototype.route = function provideRouter (opts) {
 }
 
 function validateParameters (path, readables) {
-  if (typeof path !== 'string') {
-    if (arguments.length > 1) {
-      readables = Array.prototype.slice(arguments)
-    } else {
-      readables = path
-    }
-
-    path = '*'
-  } else {
-    if (arguments.length > 2) {
-      readables = Array.prototype.slice.call(arguments, 1)
-    }
+  if (arguments.length > 2) {
+    readables = Array.prototype.slice.call(arguments, 1)
   }
 
   if (!(readables instanceof Array)) {

@@ -56,3 +56,32 @@ test('should differentiate handlers by method', function (t) {
     })
     )
 })
+
+test('should handle both throughs and sources as handlers', function (t) {
+  t.plan(2)
+  var router = new HttpRouter()
+
+  router.get('/through', pull.map(function (){return 'yes'}))
+  router.get('/source', pull.values(['yes']))  
+
+  var last
+
+  pull(
+    pull.values([{url: 'http://www.anothertest.com/through', method: 'GET'}]),
+    router.route(),
+    pull.drain(function (ea) {
+      last = ea
+    }, function () {
+      t.ok(last === 'yes', 'Handle through streams as handlers fine.')
+      pull(
+        pull.values([{url: 'http://www.anothertest.com/source', method: 'GET'}]),
+        router.route(),
+        pull.drain(function (ea) {
+          t.ok(ea === 'yes', 'Handle sources as handlers too')
+        }, function () {
+          t.end()
+        })
+      )
+    })
+    )
+})

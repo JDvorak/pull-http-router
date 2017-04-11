@@ -1,6 +1,6 @@
 {
   "name": "pull-http-router",
-  "version": "1.0.1",
+  "version": "1.1.1",
   "description": "Minimal express-like router for pull-streams",
   "main": "index.js",
   "scripts": {
