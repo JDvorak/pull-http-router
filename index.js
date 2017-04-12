@@ -31,6 +31,7 @@ PullHttpRouter.prototype.route = function provideRouter (opts) {
       throw new Error('No route matched.')
     }
 
+    request.params = match.param
     readables = match.node[request.method]
 
     if (readables[0].length === 1) { // it is all through streams
