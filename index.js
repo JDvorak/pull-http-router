@@ -35,7 +35,7 @@ PullHttpRouter.prototype.route = function provideRouter (opts) {
     readables = match.node[request.method]
 
     if (readables[0].length === 1) { // it is all through streams
-      readables = [pull.values([request])].concat(readables) //attach the data again
+      readables = [pull.values([request])].concat(readables) // attach the data again
     }
 
     return pull.apply(this, readables)

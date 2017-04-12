@@ -61,8 +61,8 @@ test('should handle both throughs and sources as handlers', function (t) {
   t.plan(2)
   var router = new HttpRouter()
 
-  router.get('/through', pull.map(function (){return 'yes'}))
-  router.get('/source', pull.values(['yes']))  
+  router.get('/through', pull.map(function () { return 'yes' }))
+  router.get('/source', pull.values(['yes']))
 
   var last
 
