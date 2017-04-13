@@ -85,3 +85,38 @@ test('should handle both throughs and sources as handlers', function (t) {
     })
     )
 })
+
+test('should handle both throughs and sources as handlers even when nested', function (t) {
+  t.plan(4)
+  var router = new HttpRouter()
+
+  router.get('/through', pull.map(function () { return pull(pull.values([0]), pull.map(function () { return pull(pull.values([0]), pull.map(function () { return 'yes' })) })) }))
+  router.get('/source', pull.map(function () { return pull(pull.values(['yes'])) }))
+
+  var last
+  var i = 0
+
+  pull(
+    pull.values([{url: 'http://www.anothertest.com/through', method: 'GET'}]),
+    router.route(),
+    pull.drain(function (ea) {
+      i++
+      last = ea
+    }, function () {
+      t.ok(i === 1, 'Does not duplicate events')
+      i = 0
+      t.ok(last === 'yes', 'Handle through streams as handlers fine.')
+      pull(
+        pull.values([{url: 'http://www.anothertest.com/source', method: 'GET'}]),
+        router.route(),
+        pull.drain(function (ea) {
+          i++
+          t.ok(i === 1, 'Does not duplicate events')
+          t.ok(ea === 'yes', 'Handle sources as handlers too')
+        }, function () {
+          t.end()
+        })
+      )
+    })
+    )
+})

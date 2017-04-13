@@ -1,4 +1,5 @@
 const url = require('url')
+const flattenDeep = require('pull-flatten-deep')
 const pull = require('pull-stream')
 const methods = ['OPTIONS', 'GET', 'POST', 'PUT', 'UPDATE', 'DELETE', 'TRACE', 'CONNECT', 'PATCH']
 
@@ -41,7 +42,7 @@ PullHttpRouter.prototype.route = function provideRouter (opts) {
     return pull.apply(this, readables)
   }
 
-  return pull(pull.map(pullRoute.bind(this)), pull.flatten())
+  return pull(pull.map(pullRoute.bind(this)), flattenDeep())
 }
 
 function validateParameters (path, readables) {
